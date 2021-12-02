@@ -5,14 +5,14 @@ import (
 )
 
 func TestDetermineNumberOfLargerMeasurements(t *testing.T) {
-	numberOfRaises := determineNumberOfLargerMeasurements()
+	numberOfRaises := numberOfLargerMeasurements()
 	if numberOfRaises != 1215 {
 		t.Fatalf("numberOfRaises = %v", numberOfRaises)
 	}
 }
 
 func TestDetermineNumberOfLargerSumedMeasurements(t *testing.T) {
-	numberOfRaises := determineNumberOfLargerSumedMeasurements()
+	numberOfRaises := numberOfLargerSumedMeasurements()
 	if numberOfRaises != 1150 {
 		t.Fatalf("numberOfRaises = %v", numberOfRaises)
 	}

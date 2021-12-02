@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func position1() int {
+func simplePosition() int {
 	lines := readLines("day2.txt")
 	horizontalPosition := 0
 	depth := 0
@@ -22,7 +22,7 @@ func position1() int {
 	return horizontalPosition * depth
 }
 
-func position2() int {
+func aimedPosition() int {
 	lines := readLines("day2.txt")
 	horizontalPosition := 0
 	depth := 0

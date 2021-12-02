@@ -1,6 +1,6 @@
 package main
 
-func determineNumberOfLargerMeasurements() int {
+func numberOfLargerMeasurements() int {
 	raises := 0
 	var prev *int = nil
 	for _, eachline := range readLines("day1.txt") {
@@ -14,7 +14,7 @@ func determineNumberOfLargerMeasurements() int {
 	return raises
 }
 
-func determineNumberOfLargerSumedMeasurements() int {
+func numberOfLargerSumedMeasurements() int {
 	lines := readLines("day1.txt")
 
 	raises := 0
