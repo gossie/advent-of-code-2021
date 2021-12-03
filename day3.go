@@ -38,11 +38,11 @@ func powerConsumption() int {
 
 	epsilon := 0
 	gamma := 0
-	for key, value := range numberOfOnesPerPlace {
-		if value > numberOfLines/2 {
-			gamma |= int(math.Pow(2, float64((lineLength-1)-key)))
+	for bitIndex, numberOfOnes := range numberOfOnesPerPlace {
+		if numberOfOnes > numberOfLines/2 {
+			gamma |= int(math.Pow(2, float64((lineLength-1)-bitIndex)))
 		} else {
-			epsilon |= int(math.Pow(2, float64((lineLength-1)-key)))
+			epsilon |= int(math.Pow(2, float64((lineLength-1)-bitIndex)))
 		}
 	}
 	return epsilon * gamma
