@@ -8,4 +8,7 @@ func main() {
 
 	fmt.Println("Day 2, task 1: ", simplePosition())
 	fmt.Println("Day 2, task 2: ", aimedPosition())
+
+	fmt.Println("Day 2, task 1: ", powerConsumption())
+	fmt.Println("Day 2, task 2: ", lifeSupport())
 }
