@@ -1,8 +1,10 @@
-package main
+package day3
 
 import (
 	"math"
 	"strings"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 type selector func([]int, []int) []int
@@ -25,8 +27,8 @@ func binaryToDecimal(binary string) int {
 	return decimal
 }
 
-func powerConsumption() int {
-	lines := readLines("day3.txt")
+func PowerConsumption(file string) int {
+	lines := util.ReadLines(file)
 	numberOfLines := len(lines)
 	numberOfOnesPerPlace := make(map[int]int)
 	lineLength := 0
@@ -48,8 +50,8 @@ func powerConsumption() int {
 	return epsilon * gamma
 }
 
-func lifeSupport() int {
-	lines := readLines("day3.txt")
+func LifeSupport(file string) int {
+	lines := util.ReadLines(file)
 	bitmasks := make(map[int]int)
 	decimalNumbers := make([]int, 0, len(lines))
 

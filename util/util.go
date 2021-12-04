@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"bufio"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func readLines(filename string) []string {
+func ReadLines(filename string) []string {
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
@@ -24,7 +24,7 @@ func readLines(filename string) []string {
 	return lines
 }
 
-func intValue(line string) int {
+func IntValue(line string) int {
 	number, err := strconv.Atoi(line)
 	if err != nil {
 		panic("Line is not a number")
