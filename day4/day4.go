@@ -110,14 +110,35 @@ func readBingoData(filename string) ([]int, []bingoSheet) {
 	return polledNumbers, sheets
 }
 
+func wrapper(sheet *bingoSheet, in chan int, out chan int) {
+	number := <-in
+	sheet.selectNumber(number)
+	if sheet.won() {
+		out <- sheet.points(number)
+	} else {
+		out <- 0
+	}
+	close(out)
+}
+
 func BingoFirstWin(file string) int {
 	numbers, sheets := readBingoData(file)
 
 	for _, number := range numbers {
-		for _, sheet := range sheets {
-			sheet.selectNumber(number)
-			if sheet.won() {
-				return sheet.points(number)
+		resultChannels := make([]chan int, 0, len(sheets))
+		for index := range sheets {
+			numberChannel := make(chan int)
+			resultChannel := make(chan int)
+			resultChannels = append(resultChannels, resultChannel)
+			go wrapper(&sheets[index], numberChannel, resultChannel)
+			numberChannel <- number
+			close(numberChannel)
+		}
+
+		for _, c := range resultChannels {
+			points := <-c
+			if points > 0 {
+				return points
 			}
 		}
 	}
