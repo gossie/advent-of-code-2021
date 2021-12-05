@@ -2,7 +2,6 @@ package util
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"strconv"
 )
@@ -11,7 +10,7 @@ func ReadLines(filename string) []string {
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
-		log.Fatalf("failed opening file: %s", err)
+		panic("failed opening file")
 	}
 
 	scanner := bufio.NewScanner(file)

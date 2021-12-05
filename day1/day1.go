@@ -12,7 +12,6 @@ func NumberOfLargerMeasurements(file string) int {
 		}
 		prev = &number
 	}
-
 	return raises
 }
 

@@ -2,7 +2,6 @@ package day4
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -74,7 +73,7 @@ func readBingoData(filename string) ([]int, []bingoSheet) {
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
-		log.Fatalf("failed opening file: %s", err)
+		panic("failed opening file")
 	}
 
 	scanner := bufio.NewScanner(file)
