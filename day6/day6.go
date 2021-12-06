@@ -24,10 +24,9 @@ func startPopulation(filename string) map[int]int {
 		panic("failed opening file")
 	}
 
-	scanner := bufio.NewScanner(file)
-
 	fishes := make(map[int]int)
 
+	scanner := bufio.NewScanner(file)
 	scanner.Scan()
 	for _, fishAge := range strings.Split(scanner.Text(), ",") {
 		fishAgeAsInt, err := strconv.Atoi(fishAge)
