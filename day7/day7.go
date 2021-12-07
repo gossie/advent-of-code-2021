@@ -33,13 +33,15 @@ func readData(filename string) []int {
 func FuelConstantConsumptions(file string) int {
 	startPositions := readData(file)
 
+	minPosition := math.MaxInt
 	maxPosition := math.MinInt
 	for _, p := range startPositions {
+		minPosition = int(math.Min(float64(p), float64(minPosition)))
 		maxPosition = int(math.Max(float64(p), float64(maxPosition)))
 	}
 
 	fuel := math.MaxInt
-	for i := 0; i <= maxPosition; i++ {
+	for i := minPosition; i <= maxPosition; i++ {
 		current := 0
 		for _, p := range startPositions {
 			current += int(math.Abs(float64((p - i))))
