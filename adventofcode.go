@@ -9,6 +9,7 @@ import (
 	"github.com/gossie/adventofcode2021/day4"
 	"github.com/gossie/adventofcode2021/day5"
 	"github.com/gossie/adventofcode2021/day6"
+	"github.com/gossie/adventofcode2021/day7"
 )
 
 func main() {
@@ -35,4 +36,8 @@ func main() {
 	fmt.Println("\nPerforming tasks of day 6")
 	fmt.Println("Day 6, task 1: ", day6.FishPopulation("day6/day6.txt", 80))
 	fmt.Println("Day 6, task 2: ", day6.FishPopulation("day6/day6.txt", 256))
+
+	fmt.Println("\nPerforming tasks of day 7")
+	fmt.Println("Day 7, task 1: ", day7.FuelConstantConsumptions("day7/day7.txt"))
+	fmt.Println("Day 7, task 2: ", day7.FuelLinearConsumption("day7/day7.txt"))
 }
