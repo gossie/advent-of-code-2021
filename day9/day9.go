@@ -72,8 +72,12 @@ func RiskLevel(filename string) int {
 	return sum
 }
 
+func reachedBorderOfBasin(data [][]int, y, x, currentHeight int) bool {
+	return y < 0 || y >= len(data) || x < 0 || x >= len(data[y]) || data[y][x] <= currentHeight || data[y][x] == 9
+}
+
 func basinsSize(data [][]int, y, x, currentHeight int, visitedPoints map[point]bool) int {
-	if _, visited := visitedPoints[point{x: x, y: y}]; visited || y < 0 || y >= len(data) || x < 0 || x >= len(data[y]) || data[y][x] <= currentHeight || data[y][x] == 9 {
+	if _, visited := visitedPoints[point{x: x, y: y}]; visited || reachedBorderOfBasin(data, y, x, currentHeight) {
 		return 0
 	}
 	visitedPoints[point{x: x, y: y}] = true
