@@ -101,5 +101,5 @@ func Basin(filename string) int {
 		return basins[i] > basins[j]
 	})
 
-	return (basins[0]) * (basins[1]) * (basins[2])
+	return basins[0] * basins[1] * basins[2]
 }
