@@ -5,6 +5,7 @@ import (
 
 	"github.com/gossie/adventofcode2021/day1"
 	"github.com/gossie/adventofcode2021/day10"
+	"github.com/gossie/adventofcode2021/day11"
 	"github.com/gossie/adventofcode2021/day2"
 	"github.com/gossie/adventofcode2021/day3"
 	"github.com/gossie/adventofcode2021/day4"
@@ -55,4 +56,8 @@ func main() {
 	fmt.Println("\nPerforming tasks of day 10")
 	fmt.Println("Day 10, task 1: ", day10.ScoreForBrokenLines("day10/day10.txt"))
 	fmt.Println("Day 10, task 1: ", day10.ScoreForIncompleteLines("day10/day10.txt"))
+
+	fmt.Println("\nPerforming tasks of day 11")
+	fmt.Println("Day 11, task 1: ", day11.NumberOfFlashes("day11/day11.txt"))
+	fmt.Println("Day 11, task 2: ", day11.StepWhenAllFlash("day11/day11.txt"))
 }
