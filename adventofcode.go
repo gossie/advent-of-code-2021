@@ -63,6 +63,6 @@ func main() {
 	fmt.Println("Day 11, task 2: ", day11.StepWhenAllFlash("day11/day11.txt"))
 
 	fmt.Println("\nPerforming tasks of day 12")
-	fmt.Println("Day 12, task 1: ", day12.NumberOfPaths1("day12/day12.txt"))
-	fmt.Println("Day 12, task 1: ", day12.NumberOfPaths2("day12/day12.txt"))
+	fmt.Println("Day 12, task 1: ", day12.NumberOfPaths("day12/day12.txt", true))
+	fmt.Println("Day 12, task 2: ", day12.NumberOfPaths("day12/day12.txt", false))
 }

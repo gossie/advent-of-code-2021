@@ -64,14 +64,14 @@ func copyMap(src map[string]bool) map[string]bool {
 	return target
 }
 
-func NumberOfPaths1(filename string) int {
+func NumberOfPaths(filename string, visitEachSmallCaveOnlyOnce bool) int {
 	start := readData(filename)
 	visitedSmallCaves := map[string]bool{"start": true}
 
-	return len(visit1(start, []*cave{}, visitedSmallCaves))
+	return len(visit(start, []*cave{}, visitedSmallCaves, visitEachSmallCaveOnlyOnce, false))
 }
 
-func visit1(c *cave, currentPath []*cave, visitedSmallCaves map[string]bool) [][]*cave {
+func visit(c *cave, currentPath []*cave, visitedSmallCaves map[string]bool, visitEachSmallCaveOnlyOnce bool, visitedSmallCaveTwice bool) [][]*cave {
 	currentPath = append(currentPath, c)
 	if c.name == "end" {
 		return [][]*cave{currentPath}
@@ -83,42 +83,10 @@ func visit1(c *cave, currentPath []*cave, visitedSmallCaves map[string]bool) [][
 
 	paths := make([][]*cave, 0)
 	for _, n := range c.neighbors {
-		if !visitedSmallCaves[n.name] {
+		if n.name != "start" && ((visitEachSmallCaveOnlyOnce && !visitedSmallCaves[n.name]) || (!visitEachSmallCaveOnlyOnce && (!visitedSmallCaves[n.name] || !visitedSmallCaveTwice))) {
 			newPath := make([]*cave, len(currentPath))
 			copy(newPath, currentPath)
-			for _, p := range visit1(n, newPath, copyMap(visitedSmallCaves)) {
-				if len(p) > 0 {
-					paths = append(paths, p)
-				}
-			}
-		}
-	}
-	return paths
-}
-
-func NumberOfPaths2(filename string) int {
-	start := readData(filename)
-	visitedSmallCaves := map[string]bool{"start": true}
-
-	return len(visit2(start, []*cave{}, visitedSmallCaves, false))
-}
-
-func visit2(c *cave, currentPath []*cave, visitedSmallCaves map[string]bool, visitedSmallCaveTwice bool) [][]*cave {
-	currentPath = append(currentPath, c)
-	if c.name == "end" {
-		return [][]*cave{currentPath}
-	}
-
-	if c.small() {
-		visitedSmallCaves[c.name] = true
-	}
-
-	paths := make([][]*cave, 0)
-	for _, n := range c.neighbors {
-		if n.name != "start" && (!visitedSmallCaves[n.name] || !visitedSmallCaveTwice) {
-			newPath := make([]*cave, len(currentPath))
-			copy(newPath, currentPath)
-			for _, p := range visit2(n, newPath, copyMap(visitedSmallCaves), visitedSmallCaves[n.name] || visitedSmallCaveTwice) {
+			for _, p := range visit(n, newPath, copyMap(visitedSmallCaves), visitEachSmallCaveOnlyOnce, visitedSmallCaves[n.name] || visitedSmallCaveTwice) {
 				if len(p) > 0 {
 					paths = append(paths, p)
 				}
