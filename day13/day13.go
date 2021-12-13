@@ -71,26 +71,6 @@ func readData(filename string) ([][]string, []foldInstruction) {
 	return sheet, foldInstructions
 }
 
-func AfterOneFold(filename string) int {
-	sheet, foldInstructions := readData(filename)
-
-	if foldInstructions[0].axis == "x" {
-		sheet = foldHorizontally(sheet, foldInstructions[0].line)
-	} else {
-		sheet = foldVertically(sheet, foldInstructions[0].line)
-	}
-
-	sum := 0
-	for _, row := range sheet {
-		for _, dot := range row {
-			if dot == "#" {
-				sum++
-			}
-		}
-	}
-	return sum
-}
-
 func foldHorizontally(sheet [][]string, foldLine int) [][]string {
 	newSheet := make([][]string, 0)
 	for y := 0; y < len(sheet); y++ {
@@ -103,12 +83,16 @@ func foldHorizontally(sheet [][]string, foldLine int) [][]string {
 			shorterSlice = tmp
 		}
 
-		for x := 0; x < len(longerSlice)-len(shorterSlice); x++ {
+		longerLength := len(longerSlice)
+		shorterLength := len(shorterSlice)
+
+		for x := 0; x < longerLength-shorterLength; x++ {
 			row = append(row, longerSlice[x])
 		}
 
-		for x := len(longerSlice) - len(shorterSlice); x < len(longerSlice); x++ {
-			if longerSlice[x] == "#" || shorterSlice[(len(shorterSlice)-1)-(x-(len(longerSlice)-len(shorterSlice)))] == "#" {
+		for x := longerLength - shorterLength; x < longerLength; x++ {
+			xIndexInShorterSlice := (shorterLength - 1) - (x - (longerLength - shorterLength))
+			if longerSlice[x] == "#" || shorterSlice[xIndexInShorterSlice] == "#" {
 				row = append(row, "#")
 			} else {
 				row = append(row, ".")
@@ -130,14 +114,18 @@ func foldVertically(sheet [][]string, foldLine int) [][]string {
 		shorterSlice = tmp
 	}
 
-	for y := 0; y < len(longerSlice)-len(shorterSlice); y++ {
+	longerLength := len(longerSlice)
+	shorterLength := len(shorterSlice)
+
+	for y := 0; y < longerLength-shorterLength; y++ {
 		newSheet = append(newSheet, longerSlice[y])
 	}
 
-	for y := len(longerSlice) - len(shorterSlice); y < len(longerSlice); y++ {
+	for y := longerLength - shorterLength; y < longerLength; y++ {
 		row := make([]string, 0)
 		for x := 0; x < len(longerSlice[y]); x++ {
-			if longerSlice[y][x] == "#" || shorterSlice[(len(shorterSlice)-1)-(y-(len(longerSlice)-len(shorterSlice)))][x] == "#" {
+			yIndexInShorterSlice := (shorterLength - 1) - (y - (longerLength - shorterLength))
+			if longerSlice[y][x] == "#" || shorterSlice[yIndexInShorterSlice][x] == "#" {
 				row = append(row, "#")
 			} else {
 				row = append(row, ".")
@@ -146,6 +134,26 @@ func foldVertically(sheet [][]string, foldLine int) [][]string {
 		newSheet = append(newSheet, row)
 	}
 	return newSheet
+}
+
+func AfterOneFold(filename string) int {
+	sheet, foldInstructions := readData(filename)
+
+	if foldInstructions[0].axis == "x" {
+		sheet = foldHorizontally(sheet, foldInstructions[0].line)
+	} else {
+		sheet = foldVertically(sheet, foldInstructions[0].line)
+	}
+
+	sum := 0
+	for _, row := range sheet {
+		for _, dot := range row {
+			if dot == "#" {
+				sum++
+			}
+		}
+	}
+	return sum
 }
 
 func Code(filename string) {
