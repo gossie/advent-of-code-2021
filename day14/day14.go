@@ -37,23 +37,6 @@ func readData(filename string) (string, map[string]string) {
 	return polymer, mapping
 }
 
-func tbd(twoDigits string, currentIteration, targetIteration int, mapping map[string]string, quantities map[rune]int) string {
-	toInsert := mapping[twoDigits]
-	if currentIteration == targetIteration {
-		result := twoDigits[:1] + toInsert + twoDigits[1:]
-		for i, letter := range result {
-			if i < 2 {
-				quantities[letter]++
-			}
-		}
-		return result
-	}
-
-	prefix := tbd(twoDigits[:1]+toInsert, currentIteration+1, targetIteration, mapping, quantities)
-	suffix := tbd(toInsert+twoDigits[1:], currentIteration+1, targetIteration, mapping, quantities)
-	return prefix + suffix[1:]
-}
-
 func Quantities(filename string, iterations int) int {
 	polymer, mapping := readData(filename)
 
