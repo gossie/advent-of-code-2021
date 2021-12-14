@@ -37,37 +37,63 @@ func readData(filename string) (string, map[string]string) {
 	return polymer, mapping
 }
 
+func tbd(twoDigits string, currentIteration, targetIteration int, mapping map[string]string, quantities map[rune]int) string {
+	toInsert := mapping[twoDigits]
+	if currentIteration == targetIteration {
+		result := twoDigits[:1] + toInsert + twoDigits[1:]
+		for i, letter := range result {
+			if i < 2 {
+				quantities[letter]++
+			}
+		}
+		return result
+	}
+
+	prefix := tbd(twoDigits[:1]+toInsert, currentIteration+1, targetIteration, mapping, quantities)
+	suffix := tbd(toInsert+twoDigits[1:], currentIteration+1, targetIteration, mapping, quantities)
+	return prefix + suffix[1:]
+}
+
 func Quantities(filename string, iterations int) int {
 	polymer, mapping := readData(filename)
 
-	for i := 0; i < iterations; i++ {
-		newPolymer := ""
-		for j := 0; j < len(polymer)-1; j++ {
-			key := polymer[j : j+2]
-			toInsert := mapping[key]
-			newPolymer = newPolymer + string(polymer[j]) + toInsert
-			if j == len(polymer)-2 {
-				newPolymer += string(polymer[j+1])
-			}
-		}
-		polymer = newPolymer
+	pairs := make(map[string]int)
+	for j := 0; j < len(polymer)-1; j++ {
+		pairs[polymer[j:j+2]]++
 	}
 
-	quantities := make(map[rune]int)
-	for _, letter := range polymer {
-		quantities[letter]++
+	for i := 0; i < iterations; i++ {
+		newPairs := make(map[string]int)
+		for pair, quantity := range pairs {
+			toInsert := mapping[pair]
+			newPairs[string(pair[0])+toInsert] += quantity
+			newPairs[toInsert+string(pair[1])] += quantity
+		}
+		pairs = newPairs
+	}
+
+	letterQuatities := make(map[rune]int)
+	for pair, quantity := range pairs {
+		for _, letter := range pair {
+			letterQuatities[letter] += quantity
+		}
 	}
 
 	min := math.MaxInt
 	max := math.MinInt
 
-	for _, value := range quantities {
-		if value < min {
-			min = value
+	for letter, value := range letterQuatities {
+		actualValue := value / 2
+		if letter == rune(polymer[0]) || letter == rune(polymer[len(polymer)-1]) {
+			actualValue++
 		}
 
-		if value > max {
-			max = value
+		if actualValue < min {
+			min = actualValue
+		}
+
+		if actualValue > max {
+			max = actualValue
 		}
 	}
 

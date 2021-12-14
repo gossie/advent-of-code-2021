@@ -8,3 +8,10 @@ func TestQuantities(t *testing.T) {
 		t.Fatalf("result = %v", result)
 	}
 }
+
+func TestQuantitiesLarge(t *testing.T) {
+	result := Quantities("day14.txt", 40)
+	if result != 2827627697643 {
+		t.Fatalf("result = %v", result)
+	}
+}

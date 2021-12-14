@@ -75,5 +75,5 @@ func main() {
 
 	fmt.Println("\nPerforming tasks of day 14")
 	fmt.Println("Day 14, task 1: ", day14.Quantities("day14/day14.txt", 10))
-	//fmt.Println("Day 14, task 2: ", day14.Quantities("day14/day14.txt"))
+	fmt.Println("Day 14, task 1: ", day14.Quantities("day14/day14.txt", 40))
 }
