@@ -40,43 +40,37 @@ func readData(filename string) (string, map[string]string) {
 func Quantities(filename string, iterations int) int {
 	polymer, mapping := readData(filename)
 
+	letterQuantities := make(map[rune]int)
 	pairs := make(map[string]int)
 	for j := 0; j < len(polymer)-1; j++ {
 		pairs[polymer[j:j+2]]++
+		letterQuantities[rune(polymer[j])]++
+		if j == len(polymer)-2 {
+			letterQuantities[rune(polymer[j+1])]++
+		}
 	}
 
 	for i := 0; i < iterations; i++ {
 		newPairs := make(map[string]int)
 		for pair, quantity := range pairs {
 			toInsert := mapping[pair]
+			letterQuantities[rune(toInsert[0])] += quantity
 			newPairs[string(pair[0])+toInsert] += quantity
 			newPairs[toInsert+string(pair[1])] += quantity
 		}
 		pairs = newPairs
 	}
 
-	letterQuatities := make(map[rune]int)
-	for pair, quantity := range pairs {
-		for _, letter := range pair {
-			letterQuatities[letter] += quantity
-		}
-	}
-
 	min := math.MaxInt
 	max := math.MinInt
 
-	for letter, value := range letterQuatities {
-		actualValue := value / 2
-		if letter == rune(polymer[0]) || letter == rune(polymer[len(polymer)-1]) {
-			actualValue++
+	for _, value := range letterQuantities {
+		if value < min {
+			min = value
 		}
 
-		if actualValue < min {
-			min = actualValue
-		}
-
-		if actualValue > max {
-			max = actualValue
+		if value > max {
+			max = value
 		}
 	}
 
