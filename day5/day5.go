@@ -3,9 +3,10 @@ package day5
 import (
 	"bufio"
 	"math"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 type point struct {
@@ -33,13 +34,7 @@ func parseCoordinates(coordinates []string) point {
 }
 
 func readData(filename string, includeDiagonals bool) ([]line, [][]int) {
-	file, err := os.Open(filename)
-	defer file.Close()
-	if err != nil {
-		panic("failed opening file")
-	}
-
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(util.LoadFile(filename))
 	scanner.Split(bufio.ScanLines)
 
 	var lines []line

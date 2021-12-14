@@ -2,9 +2,10 @@ package day6
 
 import (
 	"bufio"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 type point struct {
@@ -18,15 +19,9 @@ type line struct {
 }
 
 func startPopulation(filename string) map[int]int {
-	file, err := os.Open(filename)
-	defer file.Close()
-	if err != nil {
-		panic("failed opening file")
-	}
-
 	fishes := make(map[int]int)
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(util.LoadFile(filename))
 	scanner.Scan()
 	for _, fishAge := range strings.Split(scanner.Text(), ",") {
 		fishAgeAsInt, err := strconv.Atoi(fishAge)

@@ -2,8 +2,9 @@ package day11
 
 import (
 	"bufio"
-	"os"
 	"strconv"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 type octopus struct {
@@ -23,15 +24,9 @@ func (o *octopus) flash() {
 }
 
 func readData(filename string) [][]octopus {
-	file, err := os.Open(filename)
-	defer file.Close()
-	if err != nil {
-		panic("failed opening file")
-	}
-
 	octopuses := make([][]octopus, 0, 10)
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(util.LoadFile(filename))
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		row := make([]octopus, 0, 10)

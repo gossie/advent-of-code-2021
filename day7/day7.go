@@ -3,21 +3,16 @@ package day7
 import (
 	"bufio"
 	"math"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 func readData(filename string) []int {
-	file, err := os.Open(filename)
-	defer file.Close()
-	if err != nil {
-		panic("failed opening file")
-	}
-
 	startPositions := make([]int, 0)
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(util.LoadFile(filename))
 	scanner.Scan()
 	for _, p := range strings.Split(scanner.Text(), ",") {
 		startPosition, err := strconv.Atoi(p)

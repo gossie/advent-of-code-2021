@@ -2,9 +2,10 @@ package day4
 
 import (
 	"bufio"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 type field struct {
@@ -70,13 +71,7 @@ func (sheet *bingoSheet) points(number int) int {
 }
 
 func readBingoData(filename string) ([]int, []bingoSheet) {
-	file, err := os.Open(filename)
-	defer file.Close()
-	if err != nil {
-		panic("failed opening file")
-	}
-
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(util.LoadFile(filename))
 	scanner.Split(bufio.ScanLines)
 	var sheets []bingoSheet
 	var polledNumbers []int

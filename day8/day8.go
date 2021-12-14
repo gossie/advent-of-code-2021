@@ -3,8 +3,9 @@ package day8
 import (
 	"bufio"
 	"math"
-	"os"
 	"strings"
+
+	"github.com/gossie/adventofcode2021/util"
 )
 
 type line struct {
@@ -13,15 +14,9 @@ type line struct {
 }
 
 func readData(filename string) []line {
-	file, err := os.Open(filename)
-	defer file.Close()
-	if err != nil {
-		panic("failed opening file")
-	}
-
 	lines := make([]line, 0)
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(util.LoadFile(filename))
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		lineComponents := strings.Split(scanner.Text(), " | ")
