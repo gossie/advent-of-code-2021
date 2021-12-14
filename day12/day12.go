@@ -2,9 +2,8 @@ package day12
 
 import (
 	"bufio"
+	"os"
 	"strings"
-
-	"github.com/gossie/adventofcode2021/util"
 )
 
 type cave struct {
@@ -21,10 +20,16 @@ func (c *cave) small() bool {
 }
 
 func readData(filename string) *cave {
+	file, err := os.Open(filename)
+	defer file.Close()
+	if err != nil {
+		panic("failed opening file")
+	}
+
 	allCaves := make(map[string]*cave)
 	var start *cave = nil
 
-	scanner := bufio.NewScanner(util.LoadFile(filename))
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		tunnel := strings.Split(scanner.Text(), "-")

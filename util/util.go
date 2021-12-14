@@ -6,17 +6,14 @@ import (
 	"strconv"
 )
 
-func LoadFile(filename string) *os.File {
+func ReadLines(filename string) []string {
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
 		panic("failed opening file")
 	}
-	return file
-}
 
-func ReadLines(filename string) []string {
-	scanner := bufio.NewScanner(LoadFile(filename))
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	var lines []string
 

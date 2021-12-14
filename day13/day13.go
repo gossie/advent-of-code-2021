@@ -4,10 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 	"strings"
-
-	"github.com/gossie/adventofcode2021/util"
 )
 
 type point struct {
@@ -21,6 +20,12 @@ type foldInstruction struct {
 }
 
 func readData(filename string) ([][]string, []foldInstruction) {
+	file, err := os.Open(filename)
+	defer file.Close()
+	if err != nil {
+		panic("failed opening file")
+	}
+
 	points := make([]point, 0)
 	foldInstructions := make([]foldInstruction, 0)
 
@@ -28,7 +33,7 @@ func readData(filename string) ([][]string, []foldInstruction) {
 	maxY := 0
 
 	scanCoordinates := true
-	scanner := bufio.NewScanner(util.LoadFile(filename))
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		line := scanner.Text()

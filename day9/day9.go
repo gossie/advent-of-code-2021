@@ -2,10 +2,9 @@ package day9
 
 import (
 	"bufio"
+	"os"
 	"sort"
 	"strconv"
-
-	"github.com/gossie/adventofcode2021/util"
 )
 
 type point struct {
@@ -14,9 +13,15 @@ type point struct {
 }
 
 func readData(filename string) [][]int {
+	file, err := os.Open(filename)
+	defer file.Close()
+	if err != nil {
+		panic("failed opening file")
+	}
+
 	heights := make([][]int, 0)
 
-	scanner := bufio.NewScanner(util.LoadFile(filename))
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		row := make([]int, 0)

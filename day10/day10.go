@@ -2,15 +2,20 @@ package day10
 
 import (
 	"bufio"
+	"os"
 	"sort"
-
-	"github.com/gossie/adventofcode2021/util"
 )
 
 func readData(filename string) []string {
+	file, err := os.Open(filename)
+	defer file.Close()
+	if err != nil {
+		panic("failed opening file")
+	}
+
 	lines := make([]string, 0)
 
-	scanner := bufio.NewScanner(util.LoadFile(filename))
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
