@@ -15,26 +15,26 @@ func readData(filename string) (string, map[string]string) {
 	}
 
 	polymer := ""
-	mapping := make(map[string]string)
+	rules := make(map[string]string)
 
-	scanMapping := false
+	scanRules := false
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
-			scanMapping = true
+			scanRules = true
 			continue
 		}
 
-		if !scanMapping {
+		if !scanRules {
 			polymer = line
 		} else {
 			row := strings.Split(line, " -> ")
-			mapping[row[0]] = row[1]
+			rules[row[0]] = row[1]
 		}
 	}
-	return polymer, mapping
+	return polymer, rules
 }
 
 func initializePairs(polymer string) map[string]int {
@@ -45,7 +45,7 @@ func initializePairs(polymer string) map[string]int {
 	return pairs
 }
 
-func calculateQuantities(polymer string, pairs map[string]int, mapping map[string]string, iterations int) map[rune]int {
+func calculateQuantities(polymer string, pairs map[string]int, rules map[string]string, iterations int) map[rune]int {
 	letterQuantities := make(map[rune]int)
 	for _, letter := range polymer {
 		letterQuantities[letter]++
@@ -54,7 +54,7 @@ func calculateQuantities(polymer string, pairs map[string]int, mapping map[strin
 	for i := 0; i < iterations; i++ {
 		newPairs := make(map[string]int)
 		for pair, quantity := range pairs {
-			toInsert := mapping[pair]
+			toInsert := rules[pair]
 			letterQuantities[rune(toInsert[0])] += quantity
 			newPairs[string(pair[0])+toInsert] += quantity
 			newPairs[toInsert+string(pair[1])] += quantity
@@ -79,13 +79,13 @@ func calculateMinAndMax(letterQuantities map[rune]int) (int, int) {
 }
 
 func Quantities(filename string, iterations int) int {
-	polymer, mapping := readData(filename)
+	polymer, rules := readData(filename)
 
 	min, max := calculateMinAndMax(
 		calculateQuantities(
 			polymer,
 			initializePairs(polymer),
-			mapping,
+			rules,
 			iterations,
 		),
 	)
