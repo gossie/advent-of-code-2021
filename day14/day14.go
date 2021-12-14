@@ -37,17 +37,18 @@ func readData(filename string) (string, map[string]string) {
 	return polymer, mapping
 }
 
-func Quantities(filename string, iterations int) int {
-	polymer, mapping := readData(filename)
-
-	letterQuantities := make(map[rune]int)
+func initializePairs(polymer string) map[string]int {
 	pairs := make(map[string]int)
 	for j := 0; j < len(polymer)-1; j++ {
 		pairs[polymer[j:j+2]]++
-		letterQuantities[rune(polymer[j])]++
-		if j == len(polymer)-2 {
-			letterQuantities[rune(polymer[j+1])]++
-		}
+	}
+	return pairs
+}
+
+func calculateQuantities(polymer string, pairs map[string]int, mapping map[string]string, iterations int) map[rune]int {
+	letterQuantities := make(map[rune]int)
+	for _, letter := range polymer {
+		letterQuantities[letter]++
 	}
 
 	for i := 0; i < iterations; i++ {
@@ -60,19 +61,34 @@ func Quantities(filename string, iterations int) int {
 		}
 		pairs = newPairs
 	}
+	return letterQuantities
+}
 
+func calculateMinAndMax(letterQuantities map[rune]int) (int, int) {
 	min := math.MaxInt
 	max := math.MinInt
-
 	for _, value := range letterQuantities {
 		if value < min {
 			min = value
 		}
-
 		if value > max {
 			max = value
 		}
 	}
+	return min, max
+}
+
+func Quantities(filename string, iterations int) int {
+	polymer, mapping := readData(filename)
+
+	min, max := calculateMinAndMax(
+		calculateQuantities(
+			polymer,
+			initializePairs(polymer),
+			mapping,
+			iterations,
+		),
+	)
 
 	return max - min
 }
