@@ -9,6 +9,7 @@ import (
 	"github.com/gossie/adventofcode2021/day12"
 	"github.com/gossie/adventofcode2021/day13"
 	"github.com/gossie/adventofcode2021/day14"
+	"github.com/gossie/adventofcode2021/day15"
 	"github.com/gossie/adventofcode2021/day2"
 	"github.com/gossie/adventofcode2021/day3"
 	"github.com/gossie/adventofcode2021/day4"
@@ -76,4 +77,8 @@ func main() {
 	fmt.Println("\nPerforming tasks of day 14")
 	fmt.Println("Day 14, task 1: ", day14.Quantities("day14/day14.txt", 10))
 	fmt.Println("Day 14, task 1: ", day14.Quantities("day14/day14.txt", 40))
+
+	fmt.Println("\nPerforming tasks of day 15")
+	fmt.Println("Day 15, task 1: ", day15.MinimalRisk("day15/day15.txt", 1))
+	// fmt.Println("Day 15, task 2: ", day15.MinimalRisk("day15/day15.txt", 5))
 }
