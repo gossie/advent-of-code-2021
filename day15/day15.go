@@ -131,14 +131,11 @@ func MinimalRisk(filename string, factor int) int {
 	field := readData(filename, factor)
 
 	priorityQueue := make(priorityQueue, 0)
-
 	heap.Init(&priorityQueue)
 
 	start := field[0][0]
 	visitedRiskMapping := map[point]int{start: start.risk}
-
 	bestPath := path{currentPosition: start, totalRisk: start.risk}
-
 	for bestPath.currentPosition.x != 100*factor-1 || bestPath.currentPosition.y != 100*factor-1 {
 		for _, p := range pathsToNeighbors(field, &bestPath, visitedRiskMapping) {
 			if !priorityQueue.contains(p) {
