@@ -8,3 +8,10 @@ func TestShortestPath(t *testing.T) {
 		t.Fatalf("totalRisk = %v", totalRisk)
 	}
 }
+
+func TestShortestPathLarge(t *testing.T) {
+	totalRisk := MinimalRisk("day15.txt", 5)
+	if totalRisk != 2914 {
+		t.Fatalf("totalRisk = %v", totalRisk)
+	}
+}
