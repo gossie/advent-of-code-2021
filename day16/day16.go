@@ -160,23 +160,19 @@ func readBits(bits *bitset.BitSet, startIndex, numberOfBits uint) int {
 func parsePacket(bits *bitset.BitSet, index uint, masks []int) (*packet, uint) {
 	version := version(bits, index)
 	index += 3
-	// fmt.Println("version", version)
 	typeId := typeId(bits, index)
 	index += 3
-	// fmt.Println("typeId", typeId)
 	subPackets := make([]*packet, 0)
 	literal := -1
 	operator := -1
 	if typeId == 4 {
 		literal, index = parseLiteral(bits, index, masks)
-		// fmt.Println("literal", literal)
 	} else {
 		operator = typeId
 		lengthTypeId := lengthTypeId(bits, index)
 		index++
 		if lengthTypeId == 0 {
 			subPacketLength := readBits(bits, index, 15)
-			// fmt.Println("subPacketLength", subPacketLength)
 			index += 15
 			for subPacketLength > 0 {
 				subPacket, newIndex := parsePacket(bits, index, masks)
@@ -186,7 +182,6 @@ func parsePacket(bits *bitset.BitSet, index uint, masks []int) (*packet, uint) {
 			}
 		} else {
 			numberOfSubPackets := readBits(bits, index, 11)
-			// fmt.Println("numberOfSubPackets", numberOfSubPackets)
 			index += 11
 			for i := 0; i < numberOfSubPackets; i++ {
 				subPacket, newIndex := parsePacket(bits, index, masks)
