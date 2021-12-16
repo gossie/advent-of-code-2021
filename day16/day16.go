@@ -30,36 +30,24 @@ func (p *packet) calculate() int {
 
 	switch p.operator {
 	case 0:
-		if len(p.subPackets) == 1 {
-			return p.subPackets[0].calculate()
-		}
 		sum := 0
 		for _, sp := range p.subPackets {
 			sum += sp.calculate()
 		}
 		return sum
 	case 1:
-		if len(p.subPackets) == 1 {
-			return p.subPackets[0].calculate()
-		}
 		product := 1
 		for _, sp := range p.subPackets {
 			product *= sp.calculate()
 		}
 		return product
 	case 2:
-		if len(p.subPackets) == 1 {
-			return p.subPackets[0].calculate()
-		}
 		min := math.MaxInt
 		for _, sp := range p.subPackets {
 			min = int(math.Min(float64(min), float64(sp.calculate())))
 		}
 		return min
 	case 3:
-		if len(p.subPackets) == 1 {
-			return p.subPackets[0].calculate()
-		}
 		max := math.MinInt
 		for _, sp := range p.subPackets {
 			max = int(math.Max(float64(max), float64(sp.calculate())))
