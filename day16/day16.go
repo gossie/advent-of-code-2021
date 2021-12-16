@@ -2,6 +2,7 @@ package day16
 
 import (
 	"bufio"
+	"math"
 	"os"
 
 	"github.com/gossie/bitset"
@@ -33,7 +34,33 @@ func readData(filename string) *bitset.BitSet {
 	return &bits
 }
 
+func version(bits *bitset.BitSet, startIndex int) int {
+	version := 0
+	for i := uint(startIndex); i < uint(startIndex+3); i++ {
+		if bits.IsSet(i) {
+			version |= int(math.Pow(2.0, float64(2-(i-uint(startIndex)))))
+		}
+	}
+	return version
+}
+
+func typeId(bits *bitset.BitSet, startIndex int) int {
+	version := 0
+	for i := uint(startIndex); i < uint(startIndex+3); i++ {
+		if bits.IsSet(i) {
+			version |= int(math.Pow(2.0, float64(2-(i-uint(startIndex)))))
+		}
+	}
+	return version
+}
+
 func Headers(filename string) int {
-	readData(filename)
-	return 0
+	bits := readData(filename)
+	version := version(bits, 0)
+	typeId := typeId(bits, 3)
+	if typeId == 4 {
+
+	}
+
+	return version
 }
