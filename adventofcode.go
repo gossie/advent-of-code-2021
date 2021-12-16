@@ -84,5 +84,5 @@ func main() {
 	fmt.Println("Day 15, task 2: ", day15.MinimalRisk("day15/day15.txt", 5))
 
 	fmt.Println("\nPerforming tasks of day 16")
-	fmt.Println("Day 16, task 1: ", day16.Headers("day16/day16.txt"))
+	fmt.Println("Day 16, task 1: ", day16.Versions("day16/day16.txt"))
 }
