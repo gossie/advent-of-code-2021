@@ -2,7 +2,6 @@ package day16
 
 import (
 	"bufio"
-	"fmt"
 	"math"
 	"os"
 
@@ -12,6 +11,79 @@ import (
 type packet struct {
 	version    int
 	subPackets []*packet
+	operator   int
+	literal    int
+}
+
+func (p *packet) summedVersions() int {
+	sum := p.version
+	for _, sp := range p.subPackets {
+		sum += sp.summedVersions()
+	}
+	return sum
+}
+
+func (p *packet) calculate() int {
+	if p.literal >= 0 {
+		return p.literal
+	}
+
+	switch p.operator {
+	case 0:
+		if len(p.subPackets) == 1 {
+			return p.subPackets[0].calculate()
+		}
+		sum := 0
+		for _, sp := range p.subPackets {
+			sum += sp.calculate()
+		}
+		return sum
+	case 1:
+		if len(p.subPackets) == 1 {
+			return p.subPackets[0].calculate()
+		}
+		product := 1
+		for _, sp := range p.subPackets {
+			product *= sp.calculate()
+		}
+		return product
+	case 2:
+		if len(p.subPackets) == 1 {
+			return p.subPackets[0].calculate()
+		}
+		min := math.MaxInt
+		for _, sp := range p.subPackets {
+			min = int(math.Min(float64(min), float64(sp.calculate())))
+		}
+		return min
+	case 3:
+		if len(p.subPackets) == 1 {
+			return p.subPackets[0].calculate()
+		}
+		max := math.MinInt
+		for _, sp := range p.subPackets {
+			max = int(math.Max(float64(max), float64(sp.calculate())))
+		}
+		return max
+	case 5:
+		if p.subPackets[0].calculate() > p.subPackets[1].calculate() {
+			return 1
+		}
+		return 0
+	case 6:
+		if p.subPackets[0].calculate() < p.subPackets[1].calculate() {
+			return 1
+		}
+		return 0
+	case 7:
+		if p.subPackets[0].calculate() == p.subPackets[1].calculate() {
+			return 1
+		}
+		return 0
+	default:
+		panic("unknown operator")
+	}
+
 }
 
 func readData(filename string) *bitset.BitSet {
@@ -60,7 +132,7 @@ func typeId(bits *bitset.BitSet, startIndex uint) int {
 	return version
 }
 
-func literal(bits *bitset.BitSet, startIndex uint, masks []int) (int, uint) {
+func parseLiteral(bits *bitset.BitSet, startIndex uint, masks []int) (int, uint) {
 	literal := 0
 	index := startIndex
 	goOn := true
@@ -100,21 +172,23 @@ func readBits(bits *bitset.BitSet, startIndex, numberOfBits uint) int {
 func parsePacket(bits *bitset.BitSet, index uint, masks []int) (*packet, uint) {
 	version := version(bits, index)
 	index += 3
-	fmt.Println("version", version)
+	// fmt.Println("version", version)
 	typeId := typeId(bits, index)
 	index += 3
-	fmt.Println("typeId", typeId)
+	// fmt.Println("typeId", typeId)
 	subPackets := make([]*packet, 0)
+	literal := -1
+	operator := -1
 	if typeId == 4 {
-		literal, newIndex := literal(bits, index, masks)
-		index = newIndex
-		fmt.Println("literal", literal)
+		literal, index = parseLiteral(bits, index, masks)
+		// fmt.Println("literal", literal)
 	} else {
+		operator = typeId
 		lengthTypeId := lengthTypeId(bits, index)
 		index++
 		if lengthTypeId == 0 {
 			subPacketLength := readBits(bits, index, 15)
-			fmt.Println("subPacketLength", subPacketLength)
+			// fmt.Println("subPacketLength", subPacketLength)
 			index += 15
 			for subPacketLength > 0 {
 				subPacket, newIndex := parsePacket(bits, index, masks)
@@ -124,7 +198,7 @@ func parsePacket(bits *bitset.BitSet, index uint, masks []int) (*packet, uint) {
 			}
 		} else {
 			numberOfSubPackets := readBits(bits, index, 11)
-			fmt.Println("numberOfSubPackets", numberOfSubPackets)
+			// fmt.Println("numberOfSubPackets", numberOfSubPackets)
 			index += 11
 			for i := 0; i < numberOfSubPackets; i++ {
 				subPacket, newIndex := parsePacket(bits, index, masks)
@@ -134,15 +208,7 @@ func parsePacket(bits *bitset.BitSet, index uint, masks []int) (*packet, uint) {
 		}
 	}
 
-	return &packet{version: version, subPackets: subPackets}, index
-}
-
-func versionSum(p *packet) int {
-	sum := p.version
-	for _, sp := range p.subPackets {
-		sum += versionSum(sp)
-	}
-	return sum
+	return &packet{version: version, subPackets: subPackets, literal: literal, operator: operator}, index
 }
 
 func Versions(filename string) int {
@@ -153,5 +219,16 @@ func Versions(filename string) int {
 
 	rootPacket, _ := parsePacket(bits, index, masks)
 
-	return versionSum(rootPacket)
+	return rootPacket.summedVersions()
+}
+
+func Calculate(filename string) int {
+	bits := readData(filename)
+
+	masks := []int{8, 4, 2, 1}
+	index := uint(0)
+
+	rootPacket, _ := parsePacket(bits, index, masks)
+
+	return rootPacket.calculate()
 }

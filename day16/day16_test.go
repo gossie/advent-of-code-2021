@@ -8,3 +8,10 @@ func TestVersions(t *testing.T) {
 		t.Fatalf("versions = %v", versions)
 	}
 }
+
+func TestCalculate(t *testing.T) {
+	calculationResult := Calculate("day16.txt")
+	if calculationResult != 1922490999789 {
+		t.Fatalf("calculationResult = %v", calculationResult)
+	}
+}
