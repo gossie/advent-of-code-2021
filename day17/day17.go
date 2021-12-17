@@ -91,15 +91,7 @@ func hitsTarget(xVelocity, yVelocity int, target area) bool {
 
 func Heighest(filename string) int {
 	targetArea := readData(filename)
-
-	maximum := math.MinInt
-	for x := 1; x < targetArea.endPoint.x+1; x++ {
-		for y := -100; y < 100; y++ {
-			localMaximum := heighestY(x, y, targetArea)
-			maximum = int(math.Max(float64(maximum), float64(localMaximum)))
-		}
-	}
-	return maximum
+	return int(math.Abs(float64(targetArea.endPoint.y)) * (int(math.Abs(float64(targetArea.endPoint.y))) - 1) / 2
 }
 
 func HowMany(filename string) int {
