@@ -228,3 +228,23 @@ func Magnitude(filename string) int {
 	}
 	return current.magnitude()
 }
+
+func LargestMagnitude(filename string) int {
+	numbers := readData(filename)
+
+	max := math.MinInt
+	for i := 0; i < len(numbers); i++ {
+		for j := 0; j < len(numbers); j++ {
+			if i != j {
+				numbers = readData(filename)
+				magnitude := numbers[i].add(numbers[j]).reduceCompletey().magnitude()
+				max = int(math.Max(float64(magnitude), float64(max)))
+
+				numbers := readData(filename)
+				magnitude = numbers[j].add(numbers[i]).reduceCompletey().magnitude()
+				max = int(math.Max(float64(magnitude), float64(max)))
+			}
+		}
+	}
+	return max
+}

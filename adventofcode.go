@@ -95,4 +95,5 @@ func main() {
 
 	fmt.Println("\nPerforming tasks of day 18")
 	fmt.Println("Day 18, task 1: ", day18.Magnitude("day18/day18.txt"))
+	fmt.Println("Day 18, task 2: ", day18.LargestMagnitude("day18/day18.txt"))
 }
