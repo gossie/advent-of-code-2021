@@ -240,7 +240,7 @@ func LargestMagnitude(filename string) int {
 				magnitude := numbers[i].add(numbers[j]).reduceCompletey().magnitude()
 				max = int(math.Max(float64(magnitude), float64(max)))
 
-				numbers := readData(filename)
+				numbers = readData(filename)
 				magnitude = numbers[j].add(numbers[i]).reduceCompletey().magnitude()
 				max = int(math.Max(float64(magnitude), float64(max)))
 			}
