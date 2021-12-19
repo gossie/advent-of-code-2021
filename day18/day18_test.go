@@ -185,7 +185,7 @@ func TestMagnitude(t *testing.T) {
 }
 
 func TestLargestMagnitude(t *testing.T) {
-	magnitude := Magnitude("day18.txt")
+	magnitude := LargestMagnitude("day18.txt")
 	if magnitude != 4779 {
 		t.Fatalf("magnitude = %v", magnitude)
 	}
