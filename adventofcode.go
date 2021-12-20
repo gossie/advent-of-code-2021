@@ -14,6 +14,7 @@ import (
 	"github.com/gossie/adventofcode2021/day17"
 	"github.com/gossie/adventofcode2021/day18"
 	"github.com/gossie/adventofcode2021/day2"
+	"github.com/gossie/adventofcode2021/day20"
 	"github.com/gossie/adventofcode2021/day3"
 	"github.com/gossie/adventofcode2021/day4"
 	"github.com/gossie/adventofcode2021/day5"
@@ -96,4 +97,8 @@ func main() {
 	fmt.Println("\nPerforming tasks of day 18")
 	fmt.Println("Day 18, task 1: ", day18.Magnitude("day18/day18.txt"))
 	fmt.Println("Day 18, task 2: ", day18.LargestMagnitude("day18/day18.txt"))
+
+	fmt.Println("\nPerforming tasks of day 20")
+	fmt.Println("Day 20, task 1: ", day20.NumberOfLitPixels("day20/day20.txt", 2))
+	fmt.Println("Day 20, task 1: ", day20.NumberOfLitPixels("day20/day20.txt", 50))
 }

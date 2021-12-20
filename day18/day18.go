@@ -24,7 +24,7 @@ func LargestMagnitude(filename string) int {
 	for i := 0; i < len(numbers); i++ {
 		for j := 0; j < len(numbers); j++ {
 			if i != j {
-				numbers = parser.ReadData(filename)
+				numbers = parser.ReadData(filename) // that sucks! imutability for the win
 				magnitude := numbers[i].Add(numbers[j]).ReduceCompletey().Magnitude()
 				max = int(math.Max(float64(magnitude), float64(max)))
 
