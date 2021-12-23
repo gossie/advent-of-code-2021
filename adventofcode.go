@@ -106,7 +106,9 @@ func main() {
 
 	fmt.Println("\nPerforming tasks of day 21")
 	fmt.Println("Day 21, task 1: ", day21.PlayTestGame())
+	fmt.Println("Day 21, task 2: ", day21.MultipleUniverses())
 
 	fmt.Println("\nPerforming tasks of day 22")
-	fmt.Println("Day 22, task 1: ", day22.NumberOfEnabledCubes("day22/day22.txt"))
+	fmt.Println("Day 22, task 1: ", day22.NumberOfEnabledCubes("day22/day22.txt", true))
+	// fmt.Println("Day 22, task 2: ", day22.NumberOfEnabledCubes("day22/day22.txt", false))
 }

@@ -16,10 +16,8 @@ type coordinateRange struct {
 }
 
 type instruction struct {
-	action string
-	x      coordinateRange
-	y      coordinateRange
-	z      coordinateRange
+	action  string
+	x, y, z coordinateRange
 }
 
 func parseCoordinateRange(cr string) (rune, coordinateRange) {
@@ -69,14 +67,14 @@ func readData(filename string) []instruction {
 	return instructions
 }
 
-func NumberOfEnabledCubes(filename string) int {
+func NumberOfEnabledCubes(filename string, limit bool) int {
 	instructions := readData(filename)
 
 	cubes := make(map[point]bool)
 
 	for index := range instructions {
 		instruction := instructions[index]
-		if instruction.x.min >= -50 && instruction.x.max <= 50 && instruction.y.min >= -50 && instruction.y.max <= 50 && instruction.z.min >= -50 && instruction.z.max <= 50 {
+		if !limit || instruction.x.min >= -50 && instruction.x.max <= 50 && instruction.y.min >= -50 && instruction.y.max <= 50 && instruction.z.min >= -50 && instruction.z.max <= 50 {
 			for x := instruction.x.min; x <= instruction.x.max; x++ {
 				for y := instruction.y.min; y <= instruction.y.max; y++ {
 					for z := instruction.z.min; z <= instruction.z.max; z++ {

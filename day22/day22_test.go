@@ -5,7 +5,7 @@ import (
 )
 
 func TestNumberOfEnabledCubes(t *testing.T) {
-	count := NumberOfEnabledCubes("day22.txt")
+	count := NumberOfEnabledCubes("day22.txt", true)
 	if count != 609563 {
 		t.Fatalf("count = %v", count)
 	}
