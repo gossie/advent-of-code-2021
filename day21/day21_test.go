@@ -13,7 +13,7 @@ func TestPlayTestGame(t *testing.T) {
 
 func TestMultipleUniverses(t *testing.T) {
 	count := MultipleUniverses()
-	if count != 925605 {
+	if count != 486638407378784 {
 		t.Fatalf("count = %v", count)
 	}
 }
