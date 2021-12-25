@@ -13,10 +13,12 @@ import (
 	"github.com/gossie/adventofcode2021/day16"
 	"github.com/gossie/adventofcode2021/day17"
 	"github.com/gossie/adventofcode2021/day18"
+	"github.com/gossie/adventofcode2021/day19"
 	"github.com/gossie/adventofcode2021/day2"
 	"github.com/gossie/adventofcode2021/day20"
 	"github.com/gossie/adventofcode2021/day21"
 	"github.com/gossie/adventofcode2021/day22"
+	"github.com/gossie/adventofcode2021/day25"
 	"github.com/gossie/adventofcode2021/day3"
 	"github.com/gossie/adventofcode2021/day4"
 	"github.com/gossie/adventofcode2021/day5"
@@ -100,6 +102,9 @@ func main() {
 	fmt.Println("Day 18, task 1: ", day18.Magnitude("day18/day18.txt"))
 	fmt.Println("Day 18, task 2: ", day18.LargestMagnitude("day18/day18.txt"))
 
+	fmt.Println("\nPerforming tasks of day 19")
+	fmt.Println("Day 19, task 1: ", day19.DistinceBeacons("day19/day19.txt"))
+
 	fmt.Println("\nPerforming tasks of day 20")
 	fmt.Println("Day 20, task 1: ", day20.NumberOfLitPixels("day20/day20.txt", 2))
 	fmt.Println("Day 20, task 2: ", day20.NumberOfLitPixels("day20/day20.txt", 50))
@@ -111,4 +116,10 @@ func main() {
 	fmt.Println("\nPerforming tasks of day 22")
 	fmt.Println("Day 22, task 1: ", day22.NumberOfEnabledCubes("day22/day22.txt", true))
 	// fmt.Println("Day 22, task 2: ", day22.NumberOfEnabledCubes("day22/day22.txt", false))
+
+	fmt.Println("\nPerforming tasks of day 24")
+	// fmt.Println("Day 24, task 1: ", day24.ModelNumber("day24/day24.txt"))
+
+	fmt.Println("\nPerforming tasks of day 25")
+	fmt.Println("Day 25, task 1: ", day25.WhichStep("day25/day25.txt"))
 }
