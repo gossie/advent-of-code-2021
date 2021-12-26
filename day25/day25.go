@@ -2,6 +2,9 @@ package day25
 
 import (
 	"bufio"
+	"image"
+	"image/color"
+	"image/gif"
 	"os"
 )
 
@@ -120,10 +123,50 @@ func performStep(state *state) bool {
 
 func WhichStep(filename string) int {
 	state := readData(filename)
+
+	var images []*image.Paletted
+	var delays []int
+
 	goOn := true
 	step := 0
 	for ; goOn; step++ {
 		goOn = performStep(state)
+		images = append(images, renderCucumbers(state))
+		delays = append(delays, 0)
 	}
+
+	createGif(images, delays)
+
 	return step
+}
+
+func createGif(images []*image.Paletted, delays []int) {
+	f, err := os.OpenFile("rgb.gif", os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic("gif")
+	}
+	defer f.Close()
+	gif.EncodeAll(f, &gif.GIF{
+		Image: images,
+		Delay: delays,
+	})
+}
+
+func renderCucumbers(state *state) *image.Paletted {
+	var palette = []color.Color{
+		color.RGBA{0xff, 0xff, 0xff, 0xff},
+		color.RGBA{0x00, 0x00, 0xff, 0xff},
+		color.RGBA{0xff, 0x00, 0xff, 0xff},
+	}
+	img := image.NewPaletted(image.Rect(0, 0, 137, 140), palette)
+
+	for _, c := range state.easternCucumbers {
+		img.Set(c.position.x, c.position.y, color.RGBA{0x00, 0x00, 0xff, 0xff})
+	}
+
+	for _, c := range state.southernCucumbers {
+		img.Set(c.position.x, c.position.y, color.RGBA{0xff, 0x00, 0xff, 0xff})
+	}
+
+	return img
 }
