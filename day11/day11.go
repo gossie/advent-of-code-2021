@@ -2,6 +2,9 @@ package day11
 
 import (
 	"bufio"
+	"image"
+	"image/color"
+	"image/gif"
 	"os"
 	"strconv"
 )
@@ -145,6 +148,10 @@ func allFlashed(octopuses [][]octopus) bool {
 
 func StepWhenAllFlash(filename string) int {
 	octopuses := readData(filename)
+
+	var images []*image.Paletted
+	var delays []int
+
 	sum := 0
 	for i := 0; ; i++ {
 		for y, _ := range octopuses {
@@ -152,6 +159,9 @@ func StepWhenAllFlash(filename string) int {
 				octopuses[y][x].increaseEnergyLevel()
 			}
 		}
+
+		images = append(images, renderOctopus(octopuses))
+		delays = append(delays, 0)
 
 		oldSum := -1
 		for oldSum != sum {
@@ -166,7 +176,13 @@ func StepWhenAllFlash(filename string) int {
 			}
 		}
 
+		images = append(images, renderOctopus(octopuses))
+		delays = append(delays, 0)
+
 		if allFlashed(octopuses) {
+			images = append(images, renderOctopus(octopuses))
+			delays = append(delays, 5)
+			createGif("day11/octopus.gif", images, delays)
 			return i + 1
 		} else {
 			for y, _ := range octopuses {
@@ -176,4 +192,44 @@ func StepWhenAllFlash(filename string) int {
 			}
 		}
 	}
+}
+
+func createGif(name string, images []*image.Paletted, delays []int) {
+	f, err := os.OpenFile(name, os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic("gif")
+	}
+	defer f.Close()
+	gif.EncodeAll(f, &gif.GIF{
+		Image: images,
+		Delay: delays,
+	})
+}
+
+func renderOctopus(octopusses [][]octopus) *image.Paletted {
+	palette := []color.Color{
+		color.RGBA{0x00, 0x00, 0x00, 0xff},
+		color.RGBA{0xff, 0xff, 0xff, 0xff},
+		color.RGBA{0x00, 0x00, 0xff, 0xff},
+		color.RGBA{0xff, 0x00, 0xff, 0xff},
+	}
+	step := 0xff / 10
+	for i := 0; i < 10; i++ {
+		palette = append(palette, color.RGBA{uint8(step * i), uint8(step * i), uint8(step * i), 0xff})
+	}
+
+	img := image.NewPaletted(image.Rect(0, 0, 100, 100), palette)
+
+	for y, row := range octopusses {
+		for x, o := range row {
+			step := 0xff / 10
+			for i := 0; i < 10; i++ {
+				for j := 0; j < 10; j++ {
+					img.Set(x*10+i, y*10+j, color.RGBA{uint8(step * o.energyLevel), uint8(step * o.energyLevel), uint8(step * o.energyLevel), 0xff})
+				}
+			}
+		}
+	}
+
+	return img
 }

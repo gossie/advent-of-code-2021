@@ -135,13 +135,13 @@ func WhichStep(filename string) int {
 		delays = append(delays, 0)
 	}
 
-	createGif(images, delays)
+	createGif("day25/cucumbers.gif", images, delays)
 
 	return step
 }
 
-func createGif(images []*image.Paletted, delays []int) {
-	f, err := os.OpenFile("rgb.gif", os.O_WRONLY|os.O_CREATE, 0600)
+func createGif(name string, images []*image.Paletted, delays []int) {
+	f, err := os.OpenFile(name, os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		panic("gif")
 	}
@@ -158,7 +158,7 @@ func renderCucumbers(state *state) *image.Paletted {
 		color.RGBA{0x00, 0x00, 0xff, 0xff},
 		color.RGBA{0xff, 0x00, 0xff, 0xff},
 	}
-	img := image.NewPaletted(image.Rect(0, 0, 137, 140), palette)
+	img := image.NewPaletted(image.Rect(0, 0, 136, 139), palette)
 
 	for _, c := range state.easternCucumbers {
 		img.Set(c.position.x, c.position.y, color.RGBA{0x00, 0x00, 0xff, 0xff})
