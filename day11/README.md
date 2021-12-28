@@ -1,1 +1,1 @@
-![Module](/octopus.gif)
+![Module](octopus.gif)
