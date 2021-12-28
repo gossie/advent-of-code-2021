@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"image/gif"
+	"log"
 	"os"
 	"strconv"
 )
@@ -197,7 +198,8 @@ func StepWhenAllFlash(filename string) int {
 func createGif(name string, images []*image.Paletted, delays []int) {
 	f, err := os.OpenFile(name, os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
-		panic("gif")
+		log.Println("gif could not be created")
+		return
 	}
 	defer f.Close()
 	gif.EncodeAll(f, &gif.GIF{
