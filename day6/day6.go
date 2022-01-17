@@ -7,24 +7,14 @@ import (
 	"strings"
 )
 
-type point struct {
-	x int
-	y int
-}
-
-type line struct {
-	start point
-	end   point
-}
-
-func startPopulation(filename string) map[int]int {
+func startPopulation(filename string) map[int]int64 {
 	file, err := os.Open(filename)
-	defer file.Close()
 	if err != nil {
 		panic("failed opening file")
 	}
+	defer file.Close()
 
-	fishes := make(map[int]int)
+	fishes := make(map[int]int64)
 
 	scanner := bufio.NewScanner(file)
 	scanner.Scan()
@@ -39,10 +29,10 @@ func startPopulation(filename string) map[int]int {
 	return fishes
 }
 
-func FishPopulation(file string, days int) int {
+func FishPopulation(file string, days int) int64 {
 	fishes := startPopulation(file)
 	for i := 0; i < days; i++ {
-		nextGeneration := make(map[int]int)
+		nextGeneration := make(map[int]int64)
 		for i := 1; i < 9; i++ {
 			nextGeneration[i-1] = fishes[i]
 		}
@@ -51,7 +41,7 @@ func FishPopulation(file string, days int) int {
 		fishes = nextGeneration
 	}
 
-	sum := 0
+	var sum int64 = 0
 	for _, amount := range fishes {
 		sum += amount
 	}
