@@ -12,7 +12,7 @@ type packet struct {
 	version    int
 	subPackets []*packet
 	operator   int
-	literal    int
+	literal    int64
 }
 
 func (p *packet) summedVersions() int {
@@ -23,34 +23,34 @@ func (p *packet) summedVersions() int {
 	return sum
 }
 
-func (p *packet) calculate() int {
+func (p *packet) calculate() int64 {
 	if p.literal >= 0 {
 		return p.literal
 	}
 
 	switch p.operator {
 	case 0:
-		sum := 0
+		var sum int64 = 0
 		for _, sp := range p.subPackets {
 			sum += sp.calculate()
 		}
 		return sum
 	case 1:
-		product := 1
+		var product int64 = 1
 		for _, sp := range p.subPackets {
 			product *= sp.calculate()
 		}
 		return product
 	case 2:
-		min := math.MaxInt
+		var min int64 = math.MaxInt
 		for _, sp := range p.subPackets {
-			min = int(math.Min(float64(min), float64(sp.calculate())))
+			min = int64(math.Min(float64(min), float64(sp.calculate())))
 		}
 		return min
 	case 3:
-		max := math.MinInt
+		var max int64 = math.MinInt
 		for _, sp := range p.subPackets {
-			max = int(math.Max(float64(max), float64(sp.calculate())))
+			max = int64(math.Max(float64(max), float64(sp.calculate())))
 		}
 		return max
 	case 5:
@@ -120,8 +120,8 @@ func typeId(bits *bitset.BitSet, startIndex uint) int {
 	return version
 }
 
-func parseLiteral(bits *bitset.BitSet, startIndex uint, masks []int) (int, uint) {
-	literal := 0
+func parseLiteral(bits *bitset.BitSet, startIndex uint, masks []int) (int64, uint) {
+	var literal int64 = 0
 	index := startIndex
 	goOn := true
 	for goOn {
@@ -130,7 +130,7 @@ func parseLiteral(bits *bitset.BitSet, startIndex uint, masks []int) (int, uint)
 		index++
 		for i := index; i < index+4; i++ {
 			if bits.IsSet(i) {
-				literal |= masks[i-index]
+				literal |= int64(masks[i-index])
 			}
 		}
 		index += 4
@@ -163,7 +163,7 @@ func parsePacket(bits *bitset.BitSet, index uint, masks []int) (*packet, uint) {
 	typeId := typeId(bits, index)
 	index += 3
 	subPackets := make([]*packet, 0)
-	literal := -1
+	var literal int64 = -1
 	operator := -1
 	if typeId == 4 {
 		literal, index = parseLiteral(bits, index, masks)
@@ -205,7 +205,7 @@ func Versions(filename string) int {
 	return rootPacket.summedVersions()
 }
 
-func Calculate(filename string) int {
+func Calculate(filename string) int64 {
 	bits := readData(filename)
 
 	masks := []int{8, 4, 2, 1}
