@@ -9,10 +9,10 @@ import (
 
 func readData(filename string) (string, map[string]string) {
 	file, err := os.Open(filename)
-	defer file.Close()
 	if err != nil {
 		panic("failed opening file")
 	}
+	defer file.Close()
 
 	polymer := ""
 	rules := make(map[string]string)
@@ -37,22 +37,22 @@ func readData(filename string) (string, map[string]string) {
 	return polymer, rules
 }
 
-func initializePairs(polymer string) map[string]int {
-	pairs := make(map[string]int)
+func initializePairs(polymer string) map[string]int64 {
+	pairs := make(map[string]int64)
 	for j := 0; j < len(polymer)-1; j++ {
 		pairs[polymer[j:j+2]]++
 	}
 	return pairs
 }
 
-func calculateQuantities(polymer string, pairs map[string]int, rules map[string]string, iterations int) map[rune]int {
-	letterQuantities := make(map[rune]int)
+func calculateQuantities(polymer string, pairs map[string]int64, rules map[string]string, iterations int) map[rune]int64 {
+	letterQuantities := make(map[rune]int64)
 	for _, letter := range polymer {
 		letterQuantities[letter]++
 	}
 
 	for i := 0; i < iterations; i++ {
-		newPairs := make(map[string]int)
+		newPairs := make(map[string]int64)
 		for pair, quantity := range pairs {
 			toInsert := rules[pair]
 			letterQuantities[rune(toInsert[0])] += quantity
@@ -64,9 +64,9 @@ func calculateQuantities(polymer string, pairs map[string]int, rules map[string]
 	return letterQuantities
 }
 
-func calculateMinAndMax(letterQuantities map[rune]int) (int, int) {
-	min := math.MaxInt
-	max := math.MinInt
+func calculateMinAndMax(letterQuantities map[rune]int64) (int64, int64) {
+	var min int64 = math.MaxInt
+	var max int64 = math.MinInt
 	for _, value := range letterQuantities {
 		if value < min {
 			min = value
@@ -78,7 +78,7 @@ func calculateMinAndMax(letterQuantities map[rune]int) (int, int) {
 	return min, max
 }
 
-func Quantities(filename string, iterations int) int {
+func Quantities(filename string, iterations int) int64 {
 	polymer, rules := readData(filename)
 
 	min, max := calculateMinAndMax(
