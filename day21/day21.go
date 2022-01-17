@@ -22,12 +22,11 @@ func (p *player) won(limit int) bool {
 }
 
 type gameState struct {
-	turn        int
-	rolls       int
-	die         int
-	currentEyes int
-	playerOne   player
-	playerTwo   player
+	turn      int
+	rolls     int
+	die       int
+	playerOne player
+	playerTwo player
 }
 
 type wins struct {
@@ -90,7 +89,7 @@ func playGame(game gameState, gameCache map[gameState]wins, diceFrequencies map[
 	return totalWins
 }
 
-func MultipleUniverses() int {
+func MultipleUniverses() int64 {
 	startState := gameState{playerOne: player{position: 6}, playerTwo: player{position: 9}}
 
 	gameCache := make(map[gameState]wins)
@@ -106,5 +105,5 @@ func MultipleUniverses() int {
 
 	totalWins := playGame(startState, gameCache, diceFrequencies)
 
-	return int(math.Max(float64(totalWins.one), float64(totalWins.two)))
+	return int64(math.Max(float64(totalWins.one), float64(totalWins.two)))
 }
