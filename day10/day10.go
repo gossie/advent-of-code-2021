@@ -8,10 +8,10 @@ import (
 
 func readData(filename string) []string {
 	file, err := os.Open(filename)
-	defer file.Close()
 	if err != nil {
 		panic("failed opening file")
 	}
+	defer file.Close()
 
 	lines := make([]string, 0)
 
@@ -35,18 +35,15 @@ func contains(slice []rune, character rune) bool {
 
 func broken(stack []rune, character rune, mapping map[rune]rune) bool {
 	last := stack[len(stack)-1]
-	if character == mapping[last] {
-		return false
-	}
-	return true
+	return character != mapping[last]
 }
 
-func ScoreForBrokenLines(filename string) int {
-	points := map[rune]int{')': 3, ']': 57, '}': 1197, '>': 25137}
+func ScoreForBrokenLines(filename string) int64 {
+	points := map[rune]int64{')': 3, ']': 57, '}': 1197, '>': 25137}
 	closing := []rune{')', ']', '}', '>'}
 	mapping := map[rune]rune{'(': ')', '[': ']', '{': '}', '<': '>'}
 
-	score := 0
+	score := int64(0)
 	for _, line := range readData(filename) {
 		stack := make([]rune, 0)
 		for _, p := range line {
@@ -65,14 +62,14 @@ func ScoreForBrokenLines(filename string) int {
 	return score
 }
 
-func ScoreForIncompleteLines(filename string) int {
-	points := map[rune]int{')': 1, ']': 2, '}': 3, '>': 4}
+func ScoreForIncompleteLines(filename string) int64 {
+	points := map[rune]int64{')': 1, ']': 2, '}': 3, '>': 4}
 	closing := []rune{')', ']', '}', '>'}
 	mapping := map[rune]rune{'(': ')', '[': ']', '{': '}', '<': '>'}
 
-	scores := make([]int, 0)
+	scores := make([]int64, 0)
 	for _, line := range readData(filename) {
-		score := 0
+		score := int64(0)
 		stack := make([]rune, 0)
 		for cIndex, p := range line {
 			if contains(closing, p) {
