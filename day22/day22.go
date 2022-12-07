@@ -2,6 +2,7 @@ package day22
 
 import (
 	"bufio"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -9,6 +10,30 @@ import (
 
 type point struct {
 	x, y, z int
+}
+
+type cube struct {
+	x, y, z coordinateRange
+	factor  int
+}
+
+func (c *cube) intersects(other *cube) *cube {
+	x := coordinateRange{int(math.Max(float64(c.x.min), float64(other.x.min))), int(math.Min(float64(c.x.max), float64(other.x.max)))}
+	y := coordinateRange{int(math.Max(float64(c.y.min), float64(other.y.min))), int(math.Min(float64(c.y.max), float64(other.y.max)))}
+	z := coordinateRange{int(math.Max(float64(c.z.min), float64(other.z.min))), int(math.Min(float64(c.z.max), float64(other.z.max)))}
+	intersection := cube{x: x, y: y, z: z}
+	if (intersection.x.min > intersection.x.max) || (intersection.y.min > intersection.y.max) || (intersection.z.min > intersection.z.max) {
+		return nil
+	} else {
+		return &intersection
+	}
+}
+
+func (c *cube) volume() uint64 {
+	length := uint64(c.x.max - c.x.min + 1)
+	width := uint64(c.y.max - c.y.min + 1)
+	height := uint64(c.z.max - c.z.min + 1)
+	return length * width * height
 }
 
 type coordinateRange struct {
@@ -67,34 +92,35 @@ func readData(filename string) []instruction {
 	return instructions
 }
 
-func NumberOfEnabledCubes(filename string, limit bool) int {
+func NumberOfEnabledCubes(filename string, limit bool) uint64 {
 	instructions := readData(filename)
 
-	cubes := make(map[point]bool)
+	cubes := make([]*cube, 0)
 
 	for index := range instructions {
 		instruction := instructions[index]
 		if !limit || instruction.x.min >= -50 && instruction.x.max <= 50 && instruction.y.min >= -50 && instruction.y.max <= 50 && instruction.z.min >= -50 && instruction.z.max <= 50 {
-			for x := instruction.x.min; x <= instruction.x.max; x++ {
-				for y := instruction.y.min; y <= instruction.y.max; y++ {
-					for z := instruction.z.min; z <= instruction.z.max; z++ {
-						p := point{x: x, y: y, z: z}
-						if instruction.action == "on" {
-							cubes[p] = true
-						} else {
-							cubes[p] = false
-						}
-					}
+			cubesToAdd := make([]*cube, 0)
+			newCube := cube{x: instruction.x, y: instruction.y, z: instruction.z}
+			if instruction.action == "on" {
+				newCube.factor = 1
+				cubesToAdd = append(cubesToAdd, &newCube)
+			}
+
+			for _, c := range cubes {
+				intersection := c.intersects(&newCube)
+				if intersection != nil {
+					intersection.factor = -c.factor
+					cubesToAdd = append(cubesToAdd, intersection)
 				}
 			}
+			cubes = append(cubes, cubesToAdd...)
 		}
 	}
 
-	count := 0
+	count := uint64(0)
 	for _, value := range cubes {
-		if value {
-			count++
-		}
+		count += uint64(value.factor) * value.volume()
 	}
 	return count
 }
