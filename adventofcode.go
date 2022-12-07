@@ -104,6 +104,7 @@ func main() {
 
 	fmt.Println("\nPerforming tasks of day 19")
 	fmt.Println("Day 19, task 1: ", day19.DistinctBeacons("day19/day19.txt"))
+	fmt.Println("Day 19, task 2: ", day19.ManhattenDistance("day19/day19.txt"))
 
 	fmt.Println("\nPerforming tasks of day 20")
 	fmt.Println("Day 20, task 1: ", day20.NumberOfLitPixels("day20/day20.txt", 2))
