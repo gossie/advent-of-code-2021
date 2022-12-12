@@ -18,6 +18,7 @@ import (
 	"github.com/gossie/adventofcode2021/day20"
 	"github.com/gossie/adventofcode2021/day21"
 	"github.com/gossie/adventofcode2021/day22"
+	"github.com/gossie/adventofcode2021/day24"
 	"github.com/gossie/adventofcode2021/day25"
 	"github.com/gossie/adventofcode2021/day3"
 	"github.com/gossie/adventofcode2021/day4"
@@ -119,7 +120,8 @@ func main() {
 	fmt.Println("Day 22, task 2: ", day22.NumberOfEnabledCubes("day22/day22.txt", false))
 
 	fmt.Println("\nPerforming tasks of day 24")
-	//fmt.Println("Day 24, task 1: ", day24.ModelNumber("day24/day24.txt"))
+	fmt.Println("Day 24, task 1: ", day24.MaxModelNumber("day24/day24.txt"))
+	fmt.Println("Day 24, task 2: ", day24.MinModelNumber("day24/day24.txt"))
 
 	fmt.Println("\nPerforming tasks of day 25")
 	fmt.Println("Day 25, task 1: ", day25.WhichStep("day25/day25.txt"))
